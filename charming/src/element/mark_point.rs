@@ -1,6 +1,8 @@
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Serialize};
 
+use super::Symbol;
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, PartialOrd, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum MarkPointDataType {
@@ -50,4 +52,7 @@ impl From<(&str, &str)> for MarkPointData {
 pub struct MarkPoint {
     #[charming_set_vec]
     data: Vec<MarkPointData>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    symbol: Option<Symbol>,
 }
