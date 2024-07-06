@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use super::Symbol;
+
 #[derive(Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MarkPointDataType {
@@ -87,15 +89,23 @@ impl From<(&str, &str)> for MarkPointData {
 pub struct MarkPoint {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     data: Vec<MarkPointData>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    symbol: Option<Symbol>,
 }
 
 impl MarkPoint {
     pub fn new() -> Self {
-        Self { data: vec![] }
+        Self { data: vec![], symbol: Some(Symbol::Circle) }
     }
 
     pub fn data<D: Into<MarkPointData>>(mut self, data: Vec<D>) -> Self {
         self.data = data.into_iter().map(|d| d.into()).collect();
+        self
+    }
+
+    pub fn symbol(mut self, symbol: Symbol) -> Self {
+        self.symbol = Some(symbol);
         self
     }
 }
