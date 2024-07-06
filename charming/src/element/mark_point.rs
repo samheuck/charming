@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::Symbol;
+use crate::element::{Symbol, SymbolSize};
 
 #[derive(Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -92,11 +92,14 @@ pub struct MarkPoint {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    symbol_size: Option<SymbolSize>,
 }
 
 impl MarkPoint {
     pub fn new() -> Self {
-        Self { data: vec![], symbol: Some(Symbol::Circle) }
+        Self { data: vec![], symbol: None, symbol_size: None }
     }
 
     pub fn data<D: Into<MarkPointData>>(mut self, data: Vec<D>) -> Self {
@@ -106,6 +109,11 @@ impl MarkPoint {
 
     pub fn symbol(mut self, symbol: Symbol) -> Self {
         self.symbol = Some(symbol);
+        self
+    }
+
+    pub fn symbol_size(mut self, symbol_size: SymbolSize) -> Self {
+        self.symbol_size = Some(symbol_size);
         self
     }
 }
