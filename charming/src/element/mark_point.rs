@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::element::{Symbol, SymbolSize};
 
-use super::Label;
+use super::{ItemStyle, Label};
 
 #[derive(Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -101,6 +101,8 @@ pub struct MarkPoint {
     #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    item_style: Option<ItemStyle>,
 }
 
 impl MarkPoint {
@@ -110,6 +112,7 @@ impl MarkPoint {
             symbol: None,
             symbol_size: None,
             label: None,
+            item_style: None,
         }
     }
 
@@ -130,6 +133,11 @@ impl MarkPoint {
 
     pub fn label(mut self, label: Label) -> Self {
         self.label = Some(label);
+        self
+    }
+
+    pub fn item_style(mut self, item_style: ItemStyle) -> Self {
+        self.item_style = Some(item_style);
         self
     }
 }
