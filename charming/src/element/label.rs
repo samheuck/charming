@@ -99,6 +99,12 @@ pub struct Label {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_y: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    height: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    width: Option<f64>,
 }
 
 impl Label {
@@ -123,6 +129,8 @@ impl Label {
             shadow_blur: None,
             shadow_offset_x: None,
             shadow_offset_y: None,
+            height: None,
+            width: None,
         }
     }
 
@@ -163,6 +171,16 @@ impl Label {
 
     pub fn font_size<F: Into<f64>>(mut self, font_size: F) -> Self {
         self.font_size = Some(font_size.into());
+        self
+    }
+
+    pub fn height<F: Into<f64>>(mut self, height: F) -> Self {
+        self.height = Some(height.into());
+        self
+    }
+
+    pub fn width<F: Into<f64>>(mut self, width: F) -> Self {
+        self.width = Some(width.into());
         self
     }
 
