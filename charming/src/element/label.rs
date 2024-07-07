@@ -71,6 +71,9 @@ pub struct Label {
     font_weight: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    font_family: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<(f64, f64, f64, f64)>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -131,6 +134,7 @@ impl Label {
             shadow_offset_y: None,
             height: None,
             width: None,
+            font_family: None,
         }
     }
 
@@ -186,6 +190,11 @@ impl Label {
 
     pub fn font_weight<S: Into<String>>(mut self, font_weight: S) -> Self {
         self.font_weight = Some(font_weight.into());
+        self
+    }
+
+    pub fn font_family<S: Into<String>>(mut self, font_family: S) -> Self {
+        self.font_family = Some(font_family.into());
         self
     }
 
