@@ -2,6 +2,8 @@ use serde::Serialize;
 
 use crate::element::{Symbol, SymbolSize};
 
+use super::Label;
+
 #[derive(Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MarkPointDataType {
@@ -95,11 +97,20 @@ pub struct MarkPoint {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<SymbolSize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    label: Option<Label>,
+
 }
 
 impl MarkPoint {
     pub fn new() -> Self {
-        Self { data: vec![], symbol: None, symbol_size: None }
+        Self {
+            data: vec![],
+            symbol: None,
+            symbol_size: None,
+            label: None,
+        }
     }
 
     pub fn data<D: Into<MarkPointData>>(mut self, data: Vec<D>) -> Self {
@@ -114,6 +125,11 @@ impl MarkPoint {
 
     pub fn symbol_size(mut self, symbol_size: SymbolSize) -> Self {
         self.symbol_size = Some(symbol_size);
+        self
+    }
+
+    pub fn label(mut self, label: Label) -> Self {
+        self.label = Some(label);
         self
     }
 }
