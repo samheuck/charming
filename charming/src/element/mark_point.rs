@@ -1,7 +1,7 @@
 use charming_macros::CharmingSetters;
 use serde::{Deserialize, Serialize};
 
-use crate::element::{Symbol, SymbolSize};
+use crate::element::{Label, Symbol, SymbolSize};
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, PartialOrd, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
@@ -58,4 +58,8 @@ pub struct MarkPoint {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<SymbolSize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    label: Option<Label>,
+
 }
