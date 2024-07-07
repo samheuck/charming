@@ -81,6 +81,12 @@ pub struct Label {
     shadow_blur: Option<f64>,
     shadow_offset_x: Option<f64>,
     shadow_offset_y: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    height: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    width: Option<f64>,
 }
 
 impl Label {
