@@ -47,21 +47,13 @@ impl From<(&str, &str)> for MarkPointData {
   Option => #[serde(skip_serializing_if = "Option::is_none")],
   Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")]
 )]
-#[derive(Serialize, Deserialize, CharmingSetters, Debug, PartialEq, PartialOrd, Clone)]
+#[derive(Serialize, Deserialize, CharmingSetters, Debug, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct MarkPoint {
     #[charming_set_vec]
     data: Vec<MarkPointData>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<SymbolSize>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 }
