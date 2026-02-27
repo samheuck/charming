@@ -59,6 +59,9 @@ pub struct MarkLineData {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    line_style: Option<LineStyle>,
 }
 
 impl Default for MarkLineData {
@@ -79,6 +82,7 @@ impl MarkLineData {
             y_axis: None,
             coord: None,
             label: None,
+            line_style: None,
         }
     }
 
@@ -124,6 +128,11 @@ impl MarkLineData {
 
     pub fn label(mut self, label: Label) -> Self {
         self.label = Some(label);
+        self
+    }
+
+    pub fn line_style(mut self, line_style: LineStyle) -> Self {
+        self.line_style = Some(line_style);
         self
     }
 }
