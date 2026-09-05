@@ -11,5 +11,3 @@ img_test
 
 # pre-commit
 .pre-commit-config.yaml
-
-.claude/*
