@@ -13,7 +13,7 @@ let
   ];
   my-packages = with pkgs; [
     dioxus-cli
-    wasm-bindgen-cli
+    wasmBindgenCli
     wasm-pack
     trunk
     leptosfmt
@@ -30,6 +30,11 @@ let
     webkitgtk_4_1
     openssl
   ];
+
+  # dx (built with nixpkgs' no-downloads feature) and trunk both refuse to build
+  # unless the wasm-bindgen CLI on PATH exactly matches the wasm-bindgen crate in
+  # each example's Cargo.lock (enterShell warns when they drift). Bump together.
+  wasmBindgenCli = pkgs.wasm-bindgen-cli_0_2_127;
 
   # The `v8` crate's build script downloads this prebuilt static library with
   # python or curl unless RUSTY_V8_ARCHIVE points at a local file. Fetching it
@@ -63,6 +68,13 @@ in
     if [ "$lockedV8" != "${rustyV8Version}" ]; then
       echo "warning: Cargo.lock has v8 $lockedV8 but devenv.nix pins librusty_v8 ${rustyV8Version}; update rustyV8Version and its hashes"
     fi
+
+    for lock in "$DEVENV_ROOT"/examples/*/Cargo.lock; do
+      lockedWb=$(grep -A1 '^name = "wasm-bindgen"$' "$lock" | sed -n 's/^version = "\(.*\)"$/\1/p')
+      if [ -n "$lockedWb" ] && [ "$lockedWb" != "${wasmBindgenCli.version}" ]; then
+        echo "warning: $lock pins wasm-bindgen $lockedWb but devenv.nix provides wasm-bindgen-cli ${wasmBindgenCli.version}; dx and trunk need an exact match"
+      fi
+    done
 
     export GIO_MODULE_DIR=${pkgs.glib-networking.out}/lib/gio/modules/
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${lib.makeLibraryPath my-packages-lib}"
